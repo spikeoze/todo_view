@@ -6,12 +6,12 @@
   "scripts": {
     "start": "nodemon index.js"
   },
+  "type": "commonjs",
   "author": "Mukhtar Amin",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/spikeoze/todo_view/issues"
   },
-  "type": "module",
   "homepage": "https://github.com/spikeoze/todo_view#readme",
   "dependencies": {
     "@prisma/client": "^4.2.1",
