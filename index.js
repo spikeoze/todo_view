@@ -1,14 +1,14 @@
-import Express from "express";
-const app = Express();
-import session from "express-session";
-import passport from "passport";
-import cors from "cors";
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const session = require('express-session');
+const passport = require("passport");
 
-
+const passportConfig = require('./passportConfig');
 
 //-------------------------middleware-------------------------//
-app.use(Express.json());
-app.use(Express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -33,22 +33,20 @@ app.use(
   })
 );
 
-
+//* ------------Passport js configuration and middleware-------------------//
+passportConfig(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
+//*------------------ Routes -------------------------//
+const userRouter = require('./routes/user');
 
+app.use("/user/", userRouter);
 
+app.get("/", (req, res) => {
+  res.send("Hello");
+});
 
-app.get('/', (req, res)=>{
-    res.send("Hello")
-})
-
-
-
-
-
-
-app.listen(8080, ()=>{
-    console.log("Running on port 8080");
-})
+app.listen(process.env.PORT || 8080, () => {
+  console.log(`Running on port ${process.env.PORT || 8080}`);
+});
