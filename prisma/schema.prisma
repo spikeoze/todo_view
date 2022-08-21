@@ -11,17 +11,30 @@ datasource db {
 }
 
 model Users {
-  id        Int        @id @default(autoincrement())
-  username  String     @unique
-  email     String     @unique
+  id        Int              @id @default(autoincrement())
+  username  String           @unique
+  email     String           @unique
   password  String
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @updatedAt @map("updated_at")
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
   Posts     Posts[]
   Comments  Comments[]
   Likes     Likes[]
+  followers User_Followers[] @relation("follower")
+  following User_Followers[] @relation("following")
 
   @@map("users")
+}
+
+model User_Followers {
+  id          Int @id @default(autoincrement())
+  user_id     Int
+  follower_id Int
+
+  follower  Users @relation(name: "follower", fields: [follower_id], references: [id])
+  following Users @relation(name: "following", fields: [user_id], references: [id])
+
+  @@map("user_followers")
 }
 
 model Posts {
