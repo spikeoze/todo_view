@@ -38,17 +38,16 @@ model User_Followers {
 }
 
 model Posts {
-  id         Int      @id @default(autoincrement())
-  title      String   @db.VarChar(150)
-  content    String   @db.VarChar(500)
-  user_id    Int
-  comment_id Int
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(150)
+  content   String   @db.VarChar(500)
+  user_id   Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  author   Users    @relation(fields: [user_id], references: [id])
-  comments Comments @relation(fields: [comment_id], references: [id])
+  author   Users      @relation(fields: [user_id], references: [id])
   Likes    Likes[]
+  Comments Comments[]
 
   @@map("posts")
 }
@@ -57,12 +56,12 @@ model Comments {
   id        Int      @id @default(autoincrement())
   text      String   @db.VarChar(300)
   user_id   Int
+  post_id   Int
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   author Users @relation(fields: [user_id], references: [id])
-
-  Posts Posts[]
+  post   Posts @relation(fields: [post_id], references: [id])
 
   @@map("comments")
 }
