@@ -43,9 +43,9 @@ const userRouter = require('./routes/user');
 
 app.use("/user/", userRouter);
 
-app.get("/", (req, res) => {
-  res.send("Hello");
-});
+
+
+//*------------------------listener-------------------------//
 
 app.listen(process.env.PORT || 8080, () => {
   console.log(`Running on port ${process.env.PORT || 8080}`);
