@@ -19,3 +19,9 @@ a {
 * {
   box-sizing: border-box;
 }
+
+#nprogress .bar {
+  background: #0073ff !important;
+  height: 6px !important;
+  padding: 0 10px !important;
+}

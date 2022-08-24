@@ -1,60 +1,103 @@
 import React from "react";
+import { useForm } from "react-hook-form";
+import { useAuthenticationContext } from "../context/authenticationContext";
 
 function Register() {
+  const {
+    currentUser,
+    registerHandler,
+    registerUsername,
+    setRegisterUsername,
+    registerPassword,
+    setRegisterPassword,
+    registerEmail,
+    setRegisterEmail,
+    inputValidation,
+    emailValidation,
+    handleSubmit,
+    errors,
+  } = useAuthenticationContext();
+
   return (
     <div className="mx-auto mt-20 flex max-w-5xl items-center justify-center dark:text-whiteColor">
       <div className="w-full max-w-sm rounded-lg border border-lightTealColor bg-whiteColor p-4 shadow-md dark:border-darkColor dark:bg-darkColor sm:p-6 md:p-8">
-        <form className="space-y-6" action="#">
-          <h5 className="text-xl font-medium text-darkColor dark:text-whiteColor">
+        <form
+          className="space-y-6"
+          onSubmit={handleSubmit((e) => {
+            registerHandler();
+          })}
+        >
+          <h5 className="text-xl font-medium text-darkColor dark:text-whiteColor mb-2">
             Register a new account
           </h5>
+          <span className="text-md font-light text-pinkColor">
+            {errors.badRequest?.message}
+          </span>
           <div>
             <label
-              for="username"
+              htmlFor="username"
               className="mb-2 block text-sm font-medium text-darkColor dark:text-whiteColor"
             >
               Username
             </label>
             <input
+              autoComplete="off"
               type="text"
               name="username"
               id="username"
+              {...inputValidation("username")}
+              value={registerUsername}
+              onChange={(e) => setRegisterUsername(e.target.value)}
               className="bg-gray-50 border-gray-300 block  w-full rounded-lg border p-2.5 text-sm text-darkColor"
               placeholder="Ex:mukhtaar123"
-              required
             />
+            <span className="text-sm font-light text-pinkColor">
+              {errors.username?.message}
+            </span>
           </div>
           <div>
             <label
-              for="email"
+              htmlFor="email"
               className="text-gray-900 dark:text-gray-300 mb-2 block text-sm font-medium"
             >
               Email
             </label>
             <input
-              type="email"
+              autoComplete="no"
+              type="text"
               name="email"
+              {...emailValidation()}
+              value={registerEmail}
+              onChange={(e) => setRegisterEmail(e.target.value)}
               id="email"
               className="bg-gray-50 border-gray-300 block  w-full rounded-lg border p-2.5 text-sm text-darkColor"
               placeholder="name@company.com"
-              required
             />
+            <span className="text-sm font-light text-pinkColor">
+              {errors.email?.message}
+            </span>
           </div>
           <div>
             <label
-              for="password"
+              htmlFor="password"
               className="dark:text-gray-300 mb-2 block text-sm font-medium text-darkColor"
             >
               Password
             </label>
             <input
+              autoComplete="off"
               type="password"
               name="password"
               id="password"
+              {...inputValidation("password")}
+              value={registerPassword}
+              onChange={(e) => setRegisterPassword(e.target.value)}
               placeholder="••••••••"
               className="bg-gray-50 border-gray-300 block  w-full rounded-lg border p-2.5 text-sm text-darkColor"
-              required
             />
+            <span className="text-sm font-light text-pinkColor">
+              {errors.password?.message}
+            </span>
           </div>
           <button
             type="submit"

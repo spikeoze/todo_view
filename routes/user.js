@@ -26,7 +26,7 @@ userRouter.post(
   loginController
 );
 
-userRouter.post("/logout", logoutController);
+userRouter.get("/logout", logoutController);
 
 userRouter.get("/currentUser", currentUserController);
 

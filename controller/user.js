@@ -4,10 +4,8 @@ const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 
 //* Controllers
-const registerController = async (req, res) => {
+const registerController = async (req, res, next) => {
   const { username, email, password } = req.body;
-  console.log(req.body);
-
   const user = await prisma.users.findFirst({ where: { username } });
 
   if (!user) {
@@ -20,8 +18,12 @@ const registerController = async (req, res) => {
         password: hashedPassword,
       },
     });
+    req.login(newUser, (err) => {
+      if (err) {
+        return next(err);
+      }
+    });
     res.status(200).json({ message: "user successfully created" });
-    console.log(newUser);
   } else {
     res.status(400).json("user with the same name already exists");
   }
@@ -42,12 +44,12 @@ const logoutController = (req, res) => {
 };
 
 const currentUserController = (req, res) => {
-  res.status(200).json({ user: req.user });
+  res.status(200).json(req.user);
 };
 
 module.exports = {
   registerController,
   loginController,
   currentUserController,
-  logoutController
+  logoutController,
 };

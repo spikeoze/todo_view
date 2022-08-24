@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const session = require('express-session');
+const session = require("express-session");
 const passport = require("passport");
 
-const passportConfig = require('./passportConfig');
+const passportConfig = require("./passportConfig");
 
 //-------------------------middleware-------------------------//
 app.use(express.json());
@@ -39,11 +39,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //*------------------ Routes -------------------------//
-const userRouter = require('./routes/user');
+const userRouter = require("./routes/user");
 
 app.use("/user/", userRouter);
-
-
 
 //*------------------------listener-------------------------//
 
