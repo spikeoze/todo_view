@@ -1,5 +1,7 @@
 const express = require("express");
 const userRouter = express.Router();
+const asyncHandler = require("express-async-handler");
+
 const passport = require("passport");
 const {
   registerController,
@@ -16,18 +18,18 @@ const {
 userRouter.post(
   "/register",
   validatorMiddleware(registerValidator),
-  registerController
+  asyncHandler(registerController)
 );
 
 userRouter.post(
   "/login",
   validatorMiddleware(loginValidator),
   passport.authenticate("local"),
-  loginController
+  asyncHandler(loginController)
 );
 
-userRouter.get("/logout", logoutController);
+userRouter.get("/logout", asyncHandler(logoutController));
 
-userRouter.get("/currentUser", currentUserController);
+userRouter.get("/currentUser", asyncHandler(currentUserController));
 
 module.exports = userRouter;

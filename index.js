@@ -40,7 +40,9 @@ app.use(passport.session());
 
 //*------------------ Routes -------------------------//
 const userRouter = require("./routes/user");
+const postRouter = require("./routes/posts");
 
+app.use("/", postRouter);
 app.use("/user/", userRouter);
 
 //*------------------------listener-------------------------//

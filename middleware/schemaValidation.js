@@ -1,6 +1,8 @@
 const Joi = require("joi");
 
-// validator
+//*-----------------------JOI validator-----------------------------//
+
+// User validator
 const registerValidator = Joi.object().keys({
   username: Joi.string().max(30).required(),
   email: Joi.string().email().required(),
@@ -12,6 +14,14 @@ const loginValidator = Joi.object().keys({
   password: Joi.string().min(4).required(),
 });
 
+// post validator
+
+const postValidator = Joi.object().keys({
+  title: Joi.string().max(150).min(1).required(),
+  content: Joi.string().max(500).min(1).required(),
+});
+
+//*-------------------------validator middleware--------------------------------//
 // use it for any route by passing any validator you defined as argument
 const validatorMiddleware = (schemaValidator) => {
   return (req, res, next) => {
@@ -28,4 +38,9 @@ const validatorMiddleware = (schemaValidator) => {
   };
 };
 
-module.exports = { registerValidator, validatorMiddleware, loginValidator };
+module.exports = {
+  registerValidator,
+  validatorMiddleware,
+  loginValidator,
+  postValidator,
+};

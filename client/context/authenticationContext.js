@@ -48,7 +48,7 @@ const AuthenticationProvider = ({ children }) => {
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-  //** ----------------------------FETCHING FUNCTIONS-------------------------- */
+  //** ----------------------------Authentication FUNCTIONS-------------------------- */
 
   // set user if data from swr changes
   useEffect(() => {
@@ -194,7 +194,7 @@ const AuthenticationProvider = ({ children }) => {
   );
 };
 
-// Custom hook for useContextk
+// Custom hook for useContext
 
 export const useAuthenticationContext = () => {
   return useContext(AuthenticationContext);
