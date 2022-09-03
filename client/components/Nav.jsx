@@ -21,9 +21,11 @@ function Nav() {
           )}
           {currentUser && (
             <>
-              <p className="text-md font-semibold text-lightTealColor">
-                {currentUser.username}
-              </p>
+              <Link href={`/user/${currentUser.username}`}>
+                <p className="text-md font-semibold text-lightTealColor">
+                  {currentUser.username}
+                </p>
+              </Link>
               <div
                 className="cursor-pointer rounded-md bg-pinkColor py-2 px-2 capitalize text-whiteColor "
                 onClick={logOutHandler}

@@ -3,6 +3,7 @@ import Router from "next/router";
 import Layout from "../components/Layout";
 import NProgress from "nprogress";
 import { AuthenticationProvider } from "../context/authenticationContext";
+import { UserPostProvider } from "../context/userPostContext";
 function MyApp({ Component, pageProps }) {
   NProgress.configure({ showSpinner: false });
 
@@ -15,9 +16,11 @@ function MyApp({ Component, pageProps }) {
   });
   return (
     <AuthenticationProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <UserPostProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </UserPostProvider>
     </AuthenticationProvider>
   );
 }
