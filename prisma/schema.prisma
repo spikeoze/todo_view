@@ -26,6 +26,11 @@ model Users {
   @@map("users")
 }
 
+model tester {
+  id   Int    @id
+  text String
+}
+
 model User_Followers {
   id          Int @id @default(autoincrement())
   user_id     Int

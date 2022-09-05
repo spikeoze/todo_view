@@ -154,8 +154,8 @@ const AuthenticationProvider = ({ children }) => {
       withCredentials: true,
     })
       .then((res) => {
-        mutate("http://localhost:8080/user/currentUser");
         router.push("/login");
+        mutate("http://localhost:8080/user/currentUser");
         console.log(res);
       })
       .catch((err) => {
