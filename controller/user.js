@@ -18,7 +18,7 @@ const registerController = async (req, res, next) => {
         password: hashedPassword,
       },
     });
-    req.login(newUser, (err) => {
+    await req.login(newUser, (err) => {
       if (err) {
         return next(err);
       }

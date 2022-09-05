@@ -9,7 +9,10 @@ const getAllPosts = async (req, res) => {
     where: { username: username },
   });
 
-  const posts = await prisma.posts.findMany({ where: { user_id: user.id } });
+  const posts = await prisma.posts.findMany({
+    where: { user_id: user.id },
+    orderBy: { createdAt: "desc" },
+  });
 
   res.status(200).json(posts);
 };
@@ -34,6 +37,7 @@ const getSinglePost = async (req, res) => {
 const createPost = async (req, res) => {
   const { title, content } = req.body;
   const { username } = req.params;
+
   const user = await prisma.users.findUnique({
     where: { username: username },
   });
