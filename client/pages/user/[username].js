@@ -16,16 +16,16 @@ function Username() {
 
   const [allPosts, setAllPosts] = useState();
 
+  const { data, error } = useSWR(
+    `http://localhost:8080/${currentUser?.username}/posts/`,
+    fetcher
+  );
+
   useEffect(() => {
     if (!currentUser) {
       router.push("/login");
     }
   }, []);
-
-  const { data, error } = useSWR(
-    `http://localhost:8080/${currentUser?.username}/posts/`,
-    fetcher
-  );
 
   useEffect(() => {
     if (data) {
@@ -37,14 +37,14 @@ function Username() {
 
   return (
     <div className="mx-auto mt-20 flex max-w-5xl items-center justify-center dark:text-whiteColor">
-      <div className="flex flex-col items-center md:items-start md:grid md:grid-cols-2 md:space-x-44">
-        <div className="flex flex-col items-center  justify-start space-y-5 order-last md:order-first  ">
+      <div className="flex flex-col items-center md:grid md:grid-cols-2 md:items-start md:space-x-44">
+        <div className="order-last flex flex-col  items-center justify-start space-y-5 md:order-first  ">
           {allPosts?.map((post) => {
             const { title, content, createdAt } = post;
             return (
               <div
                 key={post.id}
-                className="flex max-h-80 w-full max-w-3xl flex-col space-y-4 rounded-md px-5 py-4 shadow"
+                className="flex max-h-80 w-full max-w-3xl flex-col space-y-4 rounded-md border border-lightDark border-opacity-10 px-5 py-4 shadow dark:border-opacity-50"
               >
                 <div className="flex items-center justify-between ">
                   <div className="flex items-center justify-between space-x-2">
@@ -79,7 +79,7 @@ function Username() {
           })}
         </div>
 
-        <div className="flex h-fit w-72 max-w-sm mb-9 md:mb-0  flex-col items-center space-y-3 rounded-lg px-8 py-6 shadow">
+        <div className="mb-9 flex h-fit w-72 max-w-sm flex-col items-center space-y-3 rounded-lg border  border-lightDark border-opacity-10 px-8 py-6 shadow dark:border-opacity-50 md:mb-0">
           <img
             src="https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"
             alt="default"

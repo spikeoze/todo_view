@@ -20,7 +20,7 @@ function Register() {
 
   return (
     <div className="mx-auto mt-20 flex max-w-5xl items-center justify-center dark:text-whiteColor">
-      <div className="w-full max-w-sm rounded-lg border border-lightTealColor bg-whiteColor p-4 shadow-md dark:border-darkColor dark:bg-darkColor sm:p-6 md:p-8">
+      <div className="w-full max-w-sm rounded-lg border border-lightDark border-opacity-10 bg-whiteColor p-4 shadow-lg dark:border-opacity-40 dark:bg-darkColor sm:p-6 md:p-8">
         <form
           className="space-y-6"
           onSubmit={handleSubmit((e) => {
@@ -48,7 +48,7 @@ function Register() {
               {...inputValidation("username")}
               value={registerUsername}
               onChange={(e) => setRegisterUsername(e.target.value)}
-              className="bg-gray-50 border-gray-300 block  w-full rounded-lg border p-2.5 text-sm text-darkColor"
+              className="bg-gray-50 block  w-full  rounded-lg border border-lightDark border-opacity-30 p-2.5 text-sm text-darkColor  dark:bg-lightDark dark:text-grayColor "
               placeholder="Ex:mukhtaar123"
             />
             <span className="text-sm font-light text-pinkColor">
@@ -70,7 +70,7 @@ function Register() {
               value={registerEmail}
               onChange={(e) => setRegisterEmail(e.target.value)}
               id="email"
-              className="bg-gray-50 border-gray-300 block  w-full rounded-lg border p-2.5 text-sm text-darkColor"
+              className="bg-gray-50 block  w-full  rounded-lg border border-lightDark border-opacity-30 p-2.5 text-sm text-darkColor  dark:bg-lightDark dark:text-grayColor "
               placeholder="name@company.com"
             />
             <span className="text-sm font-light text-pinkColor">
@@ -93,7 +93,7 @@ function Register() {
               value={registerPassword}
               onChange={(e) => setRegisterPassword(e.target.value)}
               placeholder="••••••••"
-              className="bg-gray-50 border-gray-300 block  w-full rounded-lg border p-2.5 text-sm text-darkColor"
+              className="bg-gray-50 block  w-full  rounded-lg border border-lightDark border-opacity-30 p-2.5 text-sm text-darkColor  dark:bg-lightDark dark:text-grayColor "
             />
             <span className="text-sm font-light text-pinkColor">
               {errors.password?.message}
@@ -101,7 +101,7 @@ function Register() {
           </div>
           <button
             type="submit"
-            className="text-white w-full rounded-lg bg-lightTealColor px-5 py-2.5 text-center text-sm font-medium hover:bg-tealColor focus:outline-none focus:ring-4"
+            className="text-white w-full rounded-lg bg-lightTealColor px-5 py-2.5  text-center text-sm font-medium text-lightDark hover:bg-tealColor focus:outline-none focus:ring-4 dark:bg-tealColor"
           >
             Register
           </button>

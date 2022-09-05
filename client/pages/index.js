@@ -7,7 +7,6 @@ export default function Home() {
   const { currentUser } = useAuthenticationContext();
   return (
     <div>
-      <h1>todoView</h1>
     </div>
   );
 }

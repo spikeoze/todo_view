@@ -68,7 +68,6 @@ const AuthenticationProvider = ({ children }) => {
       url: "http://localhost:8080/user/register",
     })
       .then((res) => {
-        // setCurrentUser(data);
         mutate("http://localhost:8080/user/currentUser");
         router.push("/");
         console.log(res);
@@ -81,6 +80,10 @@ const AuthenticationProvider = ({ children }) => {
 
         console.log(err);
       });
+
+    setRegisterEmail("");
+    setRegisterPassword("");
+    setRegisterUsername("");
   };
 
   // Login handler
@@ -98,8 +101,8 @@ const AuthenticationProvider = ({ children }) => {
       }
     )
       .then((res) => {
-        mutate("http://localhost:8080/user/currentUser");
         router.push("/");
+        mutate("http://localhost:8080/user/currentUser");
         console.log(res);
       })
       .catch((err) => {
@@ -109,6 +112,9 @@ const AuthenticationProvider = ({ children }) => {
           message: err.response.data.message,
         });
       });
+
+    setLoginUsername("");
+    setLoginPassword("");
   };
 
   // Login form validation
