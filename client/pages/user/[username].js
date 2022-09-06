@@ -108,7 +108,7 @@ function Username() {
           </div>
 
           <div>
-            <button className="text-md  rounded-md border-darkColor bg-lightTealColor px-3 py-2 font-semibold text-whiteColor shadow">
+            <button className="text-md text-darkColor  rounded-md border-darkColor bg-lightTealColor px-3 py-2 font-semibold  shadow">
               Follow
             </button>
           </div>

@@ -7,18 +7,15 @@ import Nav from "./Nav";
 function Layout({ children }) {
   const [darkTheme, setDarkTheme] = useState(false);
 
-  //   const [openMenu, setOpenMenu] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
 
-  //   const ref = useRef(0);
+  const ref = useRef(0);
 
-  //   const handleClick = (e) => {
-  //     if (e.target.id !== "MENU") {
-  //       setOpenMenu(false);
-  //     }
-  //     console.log(e.target.id);
-  //   };
-
-
+  const handleClick = (e) => {
+    if (e.target.id !== "MENU") {
+      setOpenMenu(false);
+    }
+  };
 
   return (
     <div className={darkTheme ? "dark" : "bg-red-300"}>
@@ -26,13 +23,13 @@ function Layout({ children }) {
         <Nav
           darkTheme={darkTheme}
           setDarkTheme={setDarkTheme}
-          //   openMenu={openMenu}
-          //   setOpenMenu={setOpenMenu}
+          openMenu={openMenu}
+          setOpenMenu={setOpenMenu}
         />
         <main
           className="mb-auto dark:text-whiteColor"
-          // ref={ref}
-          // onClick={handleClick}
+          ref={ref}
+          onClick={handleClick}
         >
           {children}
         </main>

@@ -112,9 +112,6 @@ const AuthenticationProvider = ({ children }) => {
           message: err.response.data.message,
         });
       });
-
-    setLoginUsername("");
-    setLoginPassword("");
   };
 
   // Login form validation

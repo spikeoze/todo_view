@@ -1,37 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { HiMoon, HiMenu } from "react-icons/hi";
 import { FaLightbulb } from "react-icons/fa";
 import { useAuthenticationContext } from "../context/authenticationContext";
+import Sidebar from "./Sidebar";
+import { useRouter } from "next/router";
 
-function Nav({ darkTheme, setDarkTheme }) {
+function Nav({ darkTheme, setDarkTheme, openMenu, setOpenMenu }) {
   const colorMode = () => {
     setDarkTheme(!darkTheme);
   };
   const { currentUser, logOutHandler } = useAuthenticationContext();
+
+  const { events } = useRouter();
+
+  useEffect(() => {
+    const close = () => {
+      setOpenMenu(false);
+    };
+    events.on("routeChangeStart", close);
+    return () => {
+      // unsubscribe to event on unmount to prevent memory leak
+      events.off("routeChangeStart", close);
+    };
+  }, [events, setOpenMenu]);
+
   return (
     <div>
       <div className="mx-auto mt-2 max-w-5xl text-lightDark dark:text-grayColor">
         <div className="flex items-center justify-between md:hidden">
-          <Link href={"/"}>
-            <h1 className="text-lg font-bold text-darkTeal dark:text-lightTealColor ">
-              Todo View
-            </h1>
-          </Link>
+          <div className="flex items-center space-x-5">
+            <Link href={"/"}>
+              <h1 className="text-lg font-bold text-darkTeal dark:text-lightTealColor ">
+                Todo View
+              </h1>
+            </Link>
+            {darkTheme ? (
+              <FaLightbulb
+                onClick={colorMode}
+                className="text-xl text-darkTeal dark:text-lightTealColor"
+              />
+            ) : (
+              <HiMoon
+                onClick={colorMode}
+                className="text-xl text-darkTeal dark:text-lightTealColor"
+              />
+            )}
+          </div>
 
-          <HiMenu className="text-2xl text-darkTeal dark:text-lightTealColor " />
-
-          {darkTheme ? (
-            <FaLightbulb
-              onClick={colorMode}
-              className="text-2xl text-darkTeal dark:text-lightTealColor"
-            />
-          ) : (
-            <HiMoon
-              onClick={colorMode}
-              className="text-2xl text-darkTeal dark:text-lightTealColor"
-            />
+          {openMenu && (
+            <Sidebar currentUser={currentUser} logOutHandler={logOutHandler} />
           )}
+
+          <HiMenu
+            id="MENU"
+            onClick={() => setOpenMenu(!openMenu)}
+            className="text-2xl text-darkTeal dark:text-lightTealColor "
+          />
         </div>
 
         <div className="hidden items-center  justify-between md:flex ">
@@ -40,7 +65,6 @@ function Nav({ darkTheme, setDarkTheme }) {
               Todo View
             </h1>
           </Link>
-
           <div className="flex items-center space-x-10 ">
             {!currentUser ? (
               <>
@@ -54,22 +78,11 @@ function Nav({ darkTheme, setDarkTheme }) {
                 </Link>
                 <p
                   onClick={logOutHandler}
-                  className="text-lg rounded-md bg-pinkColor py-1 px-2 text-grayColor shadow "
+                  className="rounded-md bg-pinkColor py-1 px-2 text-lg text-grayColor shadow "
                 >
                   Logout
                 </p>
               </>
-            )}
-            {darkTheme ? (
-              <FaLightbulb
-                onClick={colorMode}
-                className="text-2xl text-darkTeal dark:text-lightTealColor"
-              />
-            ) : (
-              <HiMoon
-                onClick={colorMode}
-                className="text-2xl text-darkTeal dark:text-lightTealColor"
-              />
             )}
           </div>
         </div>
