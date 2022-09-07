@@ -1,5 +1,5 @@
-var SegfaultHandler = require('segfault-handler');
-SegfaultHandler.registerHandler("crash.log"); 
+var SegfaultHandler = require("segfault-handler");
+SegfaultHandler.registerHandler("crash.log");
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -10,7 +10,6 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const passportConfig = require("./passportConfig");
-
 
 //-------------------------middleware-------------------------//
 
@@ -49,9 +48,11 @@ app.use(errorHandler({ dumpExceptions: true, showStack: true }));
 //*------------------ Routes -------------------------//
 const userRouter = require("./routes/user");
 const postRouter = require("./routes/posts");
+const likesRouter = require("./routes/likes");
 
 app.use("/", postRouter);
 app.use("/user/", userRouter);
+app.use("/post/", likesRouter);
 
 //*------------------------listener-------------------------//
 

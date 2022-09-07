@@ -12,6 +12,10 @@ const getAllPosts = async (req, res) => {
   const posts = await prisma.posts.findMany({
     where: { user_id: user.id },
     orderBy: { createdAt: "desc" },
+    include: {
+      author: true,
+      Likes: true,
+    },
   });
 
   res.status(200).json(posts);
