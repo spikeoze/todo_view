@@ -16,12 +16,8 @@ const {
 
 const { isAuthorized } = require("../middleware/postMiddleware");
 
-postRouter.get("/:username/posts", isAuthorized, asyncHandler(getAllPosts));
-postRouter.get(
-  "/:username/posts/:id",
-  isAuthorized,
-  asyncHandler(getSinglePost)
-);
+postRouter.get("/:username/posts", asyncHandler(getAllPosts));
+postRouter.get("/:username/posts/:id", asyncHandler(getSinglePost));
 
 postRouter.post(
   "/:username/posts",
