@@ -15,6 +15,7 @@ model Users {
   username  String           @unique
   email     String           @unique
   password  String
+  bio       String?          @db.VarChar(150)
   createdAt DateTime         @default(now()) @map("created_at")
   updatedAt DateTime         @updatedAt @map("updated_at")
   Posts     Posts[]
@@ -26,18 +27,13 @@ model Users {
   @@map("users")
 }
 
-model tester {
-  id   Int    @id
-  text String
-}
-
 model User_Followers {
   id          Int @id @default(autoincrement())
   user_id     Int
   follower_id Int
 
-  follower  Users @relation(name: "follower", fields: [follower_id], references: [id])
-  following Users @relation(name: "following", fields: [user_id], references: [id])
+  follower  Users @relation(name: "follower", fields: [user_id], references: [id])
+  following Users @relation(name: "following", fields: [follower_id], references: [id])
 
   @@map("user_followers")
 }
