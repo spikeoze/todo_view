@@ -49,8 +49,10 @@ app.use(errorHandler({ dumpExceptions: true, showStack: true }));
 const userRouter = require("./routes/user");
 const postRouter = require("./routes/posts");
 const likesRouter = require("./routes/likes");
+const followersRouter = require("./routes/followers");
 
 app.use("/", postRouter);
+app.use("/", followersRouter);
 app.use("/user/", userRouter);
 app.use("/post/", likesRouter);
 
