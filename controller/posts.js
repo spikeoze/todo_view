@@ -13,8 +13,14 @@ const getAllPosts = async (req, res) => {
     where: { user_id: user.id },
     orderBy: { createdAt: "desc" },
     include: {
-      author: true,
+      author: {
+        select: {
+          id: true,
+          username: true,
+        },
+      },
       Likes: true,
+      Comments: true,
     },
   });
 
