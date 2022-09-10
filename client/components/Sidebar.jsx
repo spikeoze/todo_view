@@ -3,12 +3,17 @@ import Link from "next/link";
 import { IoPersonOutline } from "react-icons/io";
 import { BsPerson } from "react-icons/bs";
 import { FaSignInAlt } from "react-icons/fa";
-import { HiOutlineLogout, HiOutlineLogin, HiOutlineSearch } from "react-icons/hi";
+import {
+  HiOutlineLogout,
+  HiOutlineLogin,
+  HiOutlineSearch,
+  HiOutlinePlus,
+} from "react-icons/hi";
 
 function Sidebar({ currentUser, logOutHandler }) {
   return (
     <aside className="absolute top-16 right-8 w-64">
-      <div className="  overflow-y-auto rounded-lg border border-lightDark border-opacity-10 bg-darkTeal py-4 px-3 text-grayColor dark:border-opacity-40 dark:bg-lightDark ">
+      <div className="  overflow-y-auto rounded-lg border border-grayColor border-opacity-80 bg-darkTeal py-4 px-3 text-grayColor dark:border-opacity-50 dark:bg-lightDark ">
         <ul className="space-y-2">
           {currentUser && (
             <>
@@ -18,9 +23,15 @@ function Sidebar({ currentUser, logOutHandler }) {
                   <span className="ml-3">{currentUser?.username}</span>
                 </li>
               </Link>
-              <Link href={'/search'}>
+              <Link href={"/create"}>
                 <li className="flex items-center rounded-lg p-2 text-base font-normal  text-grayColor hover:bg-lightTealColor hover:text-darkColor">
-                  < HiOutlineSearch />
+                  <HiOutlinePlus />
+                  <span className="ml-3">Create</span>
+                </li>
+              </Link>
+              <Link href={"/search"}>
+                <li className="flex items-center rounded-lg p-2 text-base font-normal  text-grayColor hover:bg-lightTealColor hover:text-darkColor">
+                  <HiOutlineSearch />
                   <span className="ml-3">Search</span>
                 </li>
               </Link>

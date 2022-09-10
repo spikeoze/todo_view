@@ -60,11 +60,24 @@ function Nav({ darkTheme, setDarkTheme, openMenu, setOpenMenu }) {
         </div>
 
         <div className="hidden items-center  justify-between md:flex ">
-          <Link href={"/"}>
-            <h1 className="text-2xl font-bold text-darkTeal dark:text-lightTealColor ">
-              Todo View
-            </h1>
-          </Link>
+          <div className="flex items-center space-x-5">
+            <Link href={"/"}>
+              <h1 className="text-2xl font-bold text-darkTeal dark:text-lightTealColor ">
+                Todo View
+              </h1>
+            </Link>
+            {darkTheme ? (
+              <FaLightbulb
+                onClick={colorMode}
+                className="text-xl text-darkTeal dark:text-lightTealColor"
+              />
+            ) : (
+              <HiMoon
+                onClick={colorMode}
+                className="text-xl text-darkTeal dark:text-lightTealColor"
+              />
+            )}
+          </div>
           <div className="flex items-center space-x-10 ">
             {!currentUser ? (
               <>

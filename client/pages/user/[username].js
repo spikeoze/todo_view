@@ -38,13 +38,13 @@ function Username() {
   return (
     <div className="mx-auto mt-20 flex max-w-5xl items-center justify-center dark:text-whiteColor">
       <div className="flex flex-col items-center md:grid md:grid-cols-2 md:items-start md:space-x-44">
-        <div className="order-last flex flex-col  items-center justify-start space-y-5 md:order-first  ">
+        <div className="order-last flex flex-col items-center justify-start space-y-5 md:order-first  ">
           {allPosts?.map((post) => {
             const { title, content, createdAt } = post;
             return (
               <div
                 key={post.id}
-                className="flex max-h-80 w-full max-w-3xl flex-col space-y-4 rounded-md border border-lightDark border-opacity-10 px-5 py-4 shadow dark:border-opacity-50"
+                className="flex w-96  max-h-80 flex-col space-y-4 rounded-md border border-lightDark border-opacity-10 px-5 py-4 shadow dark:border-opacity-50"
               >
                 <div className="flex items-center justify-between ">
                   <div className="flex items-center justify-between space-x-2">
