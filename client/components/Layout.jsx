@@ -19,18 +19,14 @@ function Layout({ children }) {
 
   return (
     <div className={darkTheme ? "dark" : "bg-red-300"}>
-      <div className="flex min-h-screen flex-col justify-between bg-whiteColor p-5  transition-all dark:bg-darkColor">
+      <div className="flex min-h-screen flex-col justify-between bg-whiteColor transition-all dark:bg-darkColor">
         <Nav
           darkTheme={darkTheme}
           setDarkTheme={setDarkTheme}
           openMenu={openMenu}
           setOpenMenu={setOpenMenu}
         />
-        <main
-          className="mb-auto dark:text-whiteColor"
-          ref={ref}
-          onClick={handleClick}
-        >
+        <main className="relative mb-auto p-5" ref={ref} onClick={handleClick}>
           {children}
         </main>
         {/* <Footer /> */}

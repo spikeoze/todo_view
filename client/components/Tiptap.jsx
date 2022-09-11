@@ -12,8 +12,9 @@ import {
   FaStrikethrough,
   FaHeading,
 } from "react-icons/fa";
+import { useEffect } from "react";
 
-const Tiptap = () => {
+const Tiptap = ({ setContent }) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -33,15 +34,14 @@ const Tiptap = () => {
           "max-w-3xl h-96 md:h-80 text-lg overflow-y-auto h-auto p-5  leading-4 focus:outline-none  dark:text-grayColor prose",
       },
     },
+    onUpdate: ({ editor }) => {
+      setContent(editor.getHTML());
+    },
   });
 
   if (!editor) {
     return <h1>Loading...</h1>;
   }
-
-  const content = editor.getHTML();
-
-  console.log(content);
 
   return (
     <div className="md:text-md max-w-3xl rounded-md border-2  border-lightDark dark:border-lightDark">

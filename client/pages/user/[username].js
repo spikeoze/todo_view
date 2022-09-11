@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useUserPostContext } from "../../context/userPostContext";
 import { useAuthenticationContext } from "../../context/authenticationContext";
 import useSWR from "swr";
 import Axios from "axios";
+import parse from "html-react-parser";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi";
 import { BiComment, BiDotsVerticalRounded } from "react-icons/bi";
 
@@ -21,11 +21,11 @@ function Username() {
     fetcher
   );
 
-  useEffect(() => {
-    if (!currentUser) {
-      router.push("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!currentUser) {
+  //     router.push("/login");
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (data) {
@@ -33,18 +33,19 @@ function Username() {
     }
   }, [data]);
 
-  console.log(allPosts);
-
+  // console.log(allPosts);
+  // console.log(parse);
   return (
-    <div className="mx-auto mt-20 flex max-w-5xl items-center justify-center dark:text-whiteColor">
-      <div className="flex flex-col items-center md:grid md:grid-cols-2 md:items-start md:space-x-44">
-        <div className="order-last flex flex-col items-center justify-start space-y-5 md:order-first  ">
+    <div className="mx-auto mt-20  max-w-5xl dark:text-whiteColor">
+      <div className="flex flex-col justify-evenly md:space-x-5 lg:flex-row lg:space-x-10 ">
+        <div className="order-last flex flex-col items-center justify-start space-y-5 lg:order-first  ">
           {allPosts?.map((post) => {
-            const { title, content, createdAt } = post;
+            const { title, content, createdAt, Comments, Likes } = post;
+
             return (
               <div
                 key={post.id}
-                className="flex w-96  max-h-80 flex-col space-y-4 rounded-md border border-lightDark border-opacity-10 px-5 py-4 shadow dark:border-opacity-50"
+                className="max-h-auto flex w-full flex-col space-y-8 rounded-md border border-lightDark border-opacity-20 px-5 py-4 shadow dark:border-opacity-100 md:w-[44em]"
               >
                 <div className="flex items-center justify-between ">
                   <div className="flex items-center justify-between space-x-2">
@@ -62,16 +63,25 @@ function Username() {
                     <BiDotsVerticalRounded />
                   </button>
                 </div>
-                <div className="flex flex-col pb-3">
-                  <p className="text-lg font-bold">{title}</p>
-                  <p>{content}</p>
+                <div className="ml-2 flex flex-col space-y-7 pb-3">
+                  <p className="text-xl font-bold">{title}</p>
+                  <div className="text-md prose leading-3 text-lightDark dark:text-grayColor ">
+                    {parse(content)}
+                  </div>
                 </div>
-                <div className="mt-10 flex items-center justify-center space-x-36  ">
-                  <button className="text-3xl font-semibold text-pinkColor ">
-                    <HiOutlineHeart />
+
+                <div className=" flex items-center justify-center  space-x-36 ">
+                  <button className="flex items-center justify-center space-x-2 text-xl font-semibold text-pinkColor md:text-2xl ">
+                    <HiOutlineHeart />{" "}
+                    <span className="text-xs md:text-[15px]">
+                      {Likes?.length} Likes
+                    </span>
                   </button>
-                  <button className="text-3xl font-semibold text-lightTealColor ">
-                    <BiComment />
+                  <button className="flex items-center space-x-2 text-xl font-semibold text-lightTealColor md:text-2xl  ">
+                    <BiComment />{" "}
+                    <span className="text-xs md:text-[15px]">
+                      {Comments?.length} Comments
+                    </span>
                   </button>
                 </div>
               </div>
@@ -79,7 +89,7 @@ function Username() {
           })}
         </div>
 
-        <div className="mb-9 flex h-fit w-72 max-w-sm flex-col items-center space-y-3 rounded-lg border  border-lightDark border-opacity-10 px-8 py-6 shadow dark:border-opacity-50 md:mb-0">
+        <div className="mb-9 flex h-fit w-auto max-w-xs flex-col items-center space-y-3 self-center rounded-lg border border-lightDark  border-opacity-20 px-8 py-6 shadow dark:border-opacity-100 lg:mb-0 lg:self-start">
           <img
             src="https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"
             alt="default"
@@ -93,22 +103,22 @@ function Username() {
               <div className="flex items-center justify-around space-x-8">
                 <div className="flex flex-col items-center justify-center">
                   <p className="font-medium">Post</p>
-                  <p>12</p>
+                  <p>{currentUser?.Posts?.length}</p>
                 </div>
                 <div className="flex flex-col items-center justify-center">
                   <p className="font-medium">Followers</p>
-                  <p>43</p>
+                  <p>{currentUser?.followers?.length}</p>
                 </div>
                 <div className="flex flex-col items-center justify-center">
                   <p className="font-medium">Following</p>
-                  <p>67</p>
+                  <p>{currentUser?.following?.length}</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div>
-            <button className="text-md text-darkColor  rounded-md border-darkColor bg-lightTealColor px-3 py-2 font-semibold  shadow">
+            <button className="text-md rounded-md  border-darkColor bg-lightTealColor px-3 py-2 font-semibold text-darkColor  shadow">
               Follow
             </button>
           </div>

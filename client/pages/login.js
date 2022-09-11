@@ -15,7 +15,7 @@ function Login() {
     loginValidation,
   } = useAuthenticationContext();
 
-  //TODO Fix security issue with react hook form showing credentials after logging out or registering 
+  //TODO Fix security issue with react hook form showing credentials after logging out or registering
 
   return (
     <div className="mx-auto mt-20 flex max-w-5xl items-center justify-center dark:text-whiteColor">
@@ -43,9 +43,9 @@ function Login() {
               type="text"
               name="username"
               id="username"
-              {...loginValidation("username")}
               value={loginUsername}
-              onChange={(e) => setLoginUsername(e.target.value)}
+              {...loginValidation("username", setLoginUsername, loginUsername)}
+              // onChange={(e) => setLoginUsername(e.target.value)}
               className="bg-gray-50 block  w-full  rounded-lg border border-lightDark border-opacity-30 p-2.5 text-sm text-darkColor  dark:bg-lightDark dark:text-grayColor "
               placeholder="Ex:mukhtaar123"
             />
@@ -65,9 +65,9 @@ function Login() {
               type="password"
               name="password"
               id="password"
-              {...loginValidation("password")}
               value={loginPassword}
-              onChange={(e) => setLoginPassword(e.target.value)}
+              {...loginValidation("password", setLoginPassword, loginPassword)}
+              // onChange={(e) => setLoginPassword(e.target.value)}
               placeholder="••••••••"
               className="bg-gray-50 block  w-full  rounded-lg border border-lightDark border-opacity-30 p-2.5 text-sm text-darkColor  dark:bg-lightDark dark:text-grayColor "
             />

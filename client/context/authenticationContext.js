@@ -50,6 +50,8 @@ const AuthenticationProvider = ({ children }) => {
 
   //** ----------------------------Authentication FUNCTIONS-------------------------- */
 
+  // console.log(loginUsername, loginPassword);
+
   // set user if data from swr changes
   useEffect(() => {
     setCurrentUser(data);
@@ -69,6 +71,9 @@ const AuthenticationProvider = ({ children }) => {
     })
       .then((res) => {
         mutate("http://localhost:8080/user/currentUser");
+        setRegisterEmail("");
+        setRegisterPassword("");
+        setRegisterUsername("");
         router.push("/");
         console.log(res);
       })
@@ -77,13 +82,10 @@ const AuthenticationProvider = ({ children }) => {
           type: "custom",
           message: err.response.data,
         });
+        // clearErrors();
 
         console.log(err);
       });
-
-    setRegisterEmail("");
-    setRegisterPassword("");
-    setRegisterUsername("");
   };
 
   // Login handler
@@ -103,23 +105,30 @@ const AuthenticationProvider = ({ children }) => {
       .then((res) => {
         router.push("/");
         mutate("http://localhost:8080/user/currentUser");
+        setLoginPassword("");
+        setLoginUsername("");
         console.log(res);
       })
       .catch((err) => {
         console.log(err.response.data);
         setError2("loginError", {
           type: "custom",
-          message: err.response.data.message,
+          message: "invalid username or password",
         });
+        setTimeout(() => {
+          clearErrors();
+        }, 3000);
       });
   };
 
   // Login form validation
 
-  const loginValidation = (inputName) => {
+  const loginValidation = (inputName, setValue) => {
     return {
       ...registerLogin(inputName, {
         required: `${inputName} is required`,
+        onChange: (e) => setValue(e.target.value),
+        // value: value,
       }),
     };
   };

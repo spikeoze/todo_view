@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-const UserPostContext = React.createContext();
+const PostingContext = React.createContext();
 import useSWR, { useSWRConfig } from "swr";
 import Axios from "axios";
 import { useForm } from "react-hook-form";
@@ -15,24 +15,43 @@ import { useRouter } from "next/router";
 const fetcher = (url) =>
   Axios.get(url, { withCredentials: true }).then((res) => res.data);
 
-const UserPostProvider = ({ children }) => {
+const PostingProvider = ({ children }) => {
   //** ----------------------Utilities-------------------------*/
   const router = useRouter();
-  const { mutate } = useSWRConfig();
 
   //** -----------------------------STATES-------------------------------- */
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
   //** ----------------------------Posts GET POST DELETE FUNCTIONS-------------------------- */
 
+  const createPost = (username) => {
+    Axios({
+      method: "POST",
+      url: `http://localhost:8080/${username}/posts`,
+      data: {
+        title,
+        content,
+      },
+      withCredentials: true,
+    }).then((res) => {
+      console.log(res);
+    });
+  };
+
   return (
-    <UserPostContext.Provider value={{}}>{children}</UserPostContext.Provider>
+    <PostingContext.Provider
+      value={{ title, setTitle, content, setContent, createPost }}
+    >
+      {children}
+    </PostingContext.Provider>
   );
 };
 
 // Custom hook for useContext
 
-export const useUserPostContext = () => {
-  return useContext(UserPostContext);
+export const usePostingContext = () => {
+  return useContext(PostingContext);
 };
 
-export { UserPostContext, UserPostProvider };
+export { PostingContext, PostingProvider };
