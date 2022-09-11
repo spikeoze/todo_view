@@ -43,8 +43,14 @@ const logoutController = (req, res) => {
   });
 };
 
-const currentUserController = (req, res) => {
-  res.status(200).json(req.user);
+const currentUserController = async (req, res) => {
+  if (req.user) {
+    const user = await prisma.users.findUnique({
+      where: { username: req.user.username },
+      include: { followers: true, following: true, Posts: true },
+    });
+    res.status(200).json(user);
+  }
 };
 
 module.exports = {
