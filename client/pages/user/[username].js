@@ -3,9 +3,11 @@ import { useRouter } from "next/router";
 import { useAuthenticationContext } from "../../context/authenticationContext";
 import useSWR from "swr";
 import Axios from "axios";
+import Link from "next/link";
 import parse from "html-react-parser";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi";
 import { BiComment, BiDotsVerticalRounded } from "react-icons/bi";
+import { usePostingContext } from "../../context/postingContext";
 
 const fetcher = (url) =>
   Axios.get(url, { withCredentials: true }).then((res) => res.data);
@@ -13,6 +15,7 @@ const fetcher = (url) =>
 function Username() {
   const router = useRouter();
   const { currentUser } = useAuthenticationContext();
+  const { handleSinglePageData } = usePostingContext();
 
   const [allPosts, setAllPosts] = useState();
 
@@ -21,31 +24,23 @@ function Username() {
     fetcher
   );
 
-  // useEffect(() => {
-  //   if (!currentUser) {
-  //     router.push("/login");
-  //   }
-  // }, []);
-
   useEffect(() => {
     if (data) {
       setAllPosts(data);
     }
   }, [data]);
 
-  // console.log(allPosts);
-  // console.log(parse);
   return (
     <div className="mx-auto mt-20  max-w-5xl dark:text-whiteColor">
       <div className="flex flex-col justify-evenly md:space-x-5 lg:flex-row lg:space-x-10 ">
         <div className="order-last flex flex-col items-center justify-start space-y-5 lg:order-first  ">
           {allPosts?.map((post) => {
-            const { title, content, createdAt, Comments, Likes } = post;
+            const { title, content, createdAt, Comments, Likes, author } = post;
 
             return (
               <div
                 key={post.id}
-                className="max-h-auto flex w-full flex-col space-y-8 rounded-md border border-lightDark border-opacity-20 px-5 py-4 shadow dark:border-opacity-100 md:w-[44em]"
+                className="max-h-auto flex w-full flex-col space-y-8 rounded-md border border-lightDark border-opacity-20 px-5 py-4 shadow hover:border-opacity-50 dark:border-opacity-100 hover:dark:border-darkTeal md:w-[44em]"
               >
                 <div className="flex items-center justify-between ">
                   <div className="flex items-center justify-between space-x-2">
@@ -63,12 +58,23 @@ function Username() {
                     <BiDotsVerticalRounded />
                   </button>
                 </div>
-                <div className="ml-2 flex flex-col space-y-7 pb-3">
-                  <p className="text-xl font-bold">{title}</p>
-                  <div className="text-md prose leading-3 text-lightDark dark:text-grayColor ">
-                    {parse(content)}
+                <Link href={`/user/${author.username}/posts/${post.id}`}>
+                  <div
+                    className="ml-2 flex flex-col space-y-7 pb-3"
+                    onClick={() =>
+                      handleSinglePageData(author?.username, post?.id)
+                    }
+                  >
+                    <p className="text-xl font-bold">{title}</p>
+                    <div className="text-md prose leading-3 text-lightDark dark:text-grayColor ">
+                      {/* {parse(content).length > 30
+                        ? parse(content).substring(1, 20)
+                        : parse(content)}
+                         */}
+                      {parse(content)}
+                    </div>
                   </div>
-                </div>
+                </Link>
 
                 <div className=" flex items-center justify-center  space-x-36 ">
                   <button className="flex items-center justify-center space-x-2 text-xl font-semibold text-pinkColor md:text-2xl ">
@@ -77,12 +83,19 @@ function Username() {
                       {Likes?.length} Likes
                     </span>
                   </button>
-                  <button className="flex items-center space-x-2 text-xl font-semibold text-lightTealColor md:text-2xl  ">
-                    <BiComment />{" "}
-                    <span className="text-xs md:text-[15px]">
-                      {Comments?.length} Comments
-                    </span>
-                  </button>
+                  <Link href={`/user/${author.username}/posts/${post.id}`}>
+                    <button
+                      className="flex items-center space-x-2 text-xl font-semibold text-lightTealColor md:text-2xl  "
+                      onClick={() =>
+                        handleSinglePageData(author?.username, post?.id)
+                      }
+                    >
+                      <BiComment />{" "}
+                      <span className="text-xs md:text-[15px]">
+                        {Comments?.length} Comments
+                      </span>
+                    </button>
+                  </Link>
                 </div>
               </div>
             );

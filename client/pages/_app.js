@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import NProgress from "nprogress";
 import { AuthenticationProvider } from "../context/authenticationContext";
 import { PostingProvider } from "../context/postingContext";
+import { CommentProvider } from "../context/commentContext";
 function MyApp({ Component, pageProps }) {
   NProgress.configure({ showSpinner: false });
 
@@ -17,9 +18,11 @@ function MyApp({ Component, pageProps }) {
   return (
     <AuthenticationProvider>
       <PostingProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <CommentProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </CommentProvider>
       </PostingProvider>
     </AuthenticationProvider>
   );

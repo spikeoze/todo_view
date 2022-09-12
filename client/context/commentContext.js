@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-const PostingContext = React.createContext();
+const CommentContext = React.createContext();
 import useSWR, { useSWRConfig } from "swr";
 import Axios from "axios";
 import { useForm } from "react-hook-form";
@@ -15,60 +15,47 @@ import { useRouter } from "next/router";
 const fetcher = (url) =>
   Axios.get(url, { withCredentials: true }).then((res) => res.data);
 
-const PostingProvider = ({ children }) => {
+const CommentProvider = ({ children }) => {
   //** ----------------------Utilities-------------------------*/
   const router = useRouter();
+  const { mutate } = useSWRConfig();
 
   //** -----------------------------STATES-------------------------------- */
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [singlePageData, setSinglePageData] = useState({});
+  const [comment, setComment] = useState("");
 
   //** ----------------------------Posts GET POST DELETE FUNCTIONS-------------------------- */
 
-  const handleSinglePageData = (username, id) => {
-    const data = {
-      username: username,
-      id: id,
-    };
-    setSinglePageData(data);
-  };
-
-  const createPost = (username) => {
+  const createComment = (id, username) => {
+    console.log(id, username);
     Axios({
       method: "POST",
-      url: `http://localhost:8080/${username}/posts`,
+      url: `http://localhost:8080/post/${id}/comment`,
       data: {
-        title,
-        content,
+        text: comment,
       },
       withCredentials: true,
-    }).then((res) => {
-      console.log(res);
-    });
+    })
+      .then((res) => {
+        console.log(res);
+        mutate(`http://localhost:8080/post/${id}/comment`);
+        mutate(`http://localhost:8080/${username}/posts/${id}`);
+        setComment("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
-    <PostingContext.Provider
-      value={{
-        title,
-        setTitle,
-        content,
-        setContent,
-        createPost,
-        singlePageData,
-        handleSinglePageData,
-      }}
-    >
+    <CommentContext.Provider value={{ comment, setComment, createComment }}>
       {children}
-    </PostingContext.Provider>
+    </CommentContext.Provider>
   );
 };
 
 // Custom hook for useContext
-
-export const usePostingContext = () => {
-  return useContext(PostingContext);
+export const useCommentContext = () => {
+  return useContext(CommentContext);
 };
 
-export { PostingContext, PostingProvider };
+export { CommentContext, CommentProvider };
