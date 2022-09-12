@@ -22,7 +22,14 @@ const getComments = async (req, res) => {
 
   const comments = await prisma.comments.findMany({
     where: { post_id: postId },
-    include: { post: true },
+    include: {
+      author: {
+        select: {
+          id: true,
+          username: true,
+        },
+      },
+    },
   });
 
   res.status(200).json(comments);

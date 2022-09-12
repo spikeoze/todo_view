@@ -37,6 +37,16 @@ const getSinglePost = async (req, res) => {
 
   const post = await prisma.posts.findFirst({
     where: { id: parseInt(id), user_id: user.id },
+    include: {
+      author: {
+        select: {
+          id: true,
+          username: true,
+        },
+      },
+      Likes: true,
+      Comments: true,
+    },
   });
 
   res.status(200).json(post);
