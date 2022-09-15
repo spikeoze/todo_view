@@ -29,7 +29,7 @@ userRouter.post(
   asyncHandler(loginController)
 );
 
-userRouter.get("/logout", asyncHandler(logoutController));
+userRouter.delete("/logout", asyncHandler(logoutController));
 
 userRouter.get("/currentUser", asyncHandler(currentUserController));
 userRouter.get("/:username", asyncHandler(getUser));

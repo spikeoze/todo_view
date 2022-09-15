@@ -46,8 +46,26 @@ const CommentProvider = ({ children }) => {
       });
   };
 
+  const deleteComment = (id, commentId, username) => {
+    Axios({
+      method: "DELETE",
+      url: `http://localhost:8080/post/${id}/comment/${commentId}`,
+      withCredentials: true,
+    })
+      .then((res) => {
+        console.log(res);
+        mutate(`http://localhost:8080/post/${id}/comment`);
+        mutate(`http://localhost:8080/${username}/posts/${id}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
-    <CommentContext.Provider value={{ comment, setComment, createComment }}>
+    <CommentContext.Provider
+      value={{ comment, setComment, createComment, deleteComment }}
+    >
       {children}
     </CommentContext.Provider>
   );

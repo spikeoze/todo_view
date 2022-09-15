@@ -6,14 +6,22 @@ import { usePostingContext } from "../../../../context/postingContext";
 import parse from "html-react-parser";
 import { IoPersonCircleSharp } from "react-icons/io5";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi";
-import { BiComment, BiDotsVerticalRounded, BiSend } from "react-icons/bi";
+import {
+  BiComment,
+  BiDotsVerticalRounded,
+  BiSend,
+  BiTrash,
+} from "react-icons/bi";
 import { useCommentContext } from "../../../../context/commentContext";
+import { useAuthenticationContext } from "../../../../context/authenticationContext";
 
 const fetcher = (url) =>
   Axios.get(url, { withCredentials: true }).then((res) => res.data);
 
 function Id() {
-  const { comment, setComment, createComment } = useCommentContext();
+  const { comment, setComment, createComment, deleteComment } =
+    useCommentContext();
+  const { currentUser } = useAuthenticationContext();
   const router = useRouter();
   const { id, username } = router.query;
   const postId = parseInt(id);
@@ -50,9 +58,18 @@ function Id() {
               {new Date(postData?.createdAt).toLocaleString()}
             </p>
 
-            <button className="text-2xl font-semibold  ">
-              <BiDotsVerticalRounded />
-            </button>
+            {postData?.user_id == currentUser?.id ? (
+              <button
+                onClick={() => {
+                  deletePost(User.username, post.id);
+                }}
+                className="cursor-pointer text-2xl font-semibold text-pinkColor "
+              >
+                <BiTrash />
+              </button>
+            ) : (
+              <p></p>
+            )}
           </div>
 
           <div className="ml-2 flex flex-col space-y-7 pb-3">
@@ -105,15 +122,36 @@ function Id() {
               {comments?.map((comment) => {
                 return (
                   <div className="w-full" key={comment.id}>
-                    <div className="m-4 flex justify-start space-x-3 py-5">
-                      <div>
-                        <IoPersonCircleSharp className="text-4xl md:text-5xl " />
+                    <div className="flex items-center justify-between">
+                      <div className="m-4 flex justify-start space-x-3 py-5">
+                        <div>
+                          <IoPersonCircleSharp className="text-4xl md:text-5xl " />
+                        </div>
+                        <div>
+                          <p className="md:text-md text-sm font-medium text-darkTeal opacity-90">
+                            @{comment?.author.username}
+                          </p>
+                          <p className="text-md md:text-lg">{comment.text}</p>
+                        </div>
                       </div>
                       <div>
-                        <p className="md:text-md text-sm font-medium text-darkTeal opacity-90">
-                          @{comment?.author.username}
-                        </p>
-                        <p className="text-md md:text-lg">{comment.text}</p>
+                        {postData?.user_id == currentUser?.id ||
+                        comment.user_id == currentUser?.id ? (
+                          <button
+                            onClick={() => {
+                              deleteComment(
+                                postData.id,
+                                comment.id,
+                                currentUser.username
+                              );
+                            }}
+                            className="cursor-pointer text-2xl font-semibold text-pinkColor "
+                          >
+                            <BiTrash />
+                          </button>
+                        ) : (
+                          <p></p>
+                        )}
                       </div>
                     </div>
                     <div className="h-[1px] w-full bg-lightDark opacity-20 dark:opacity-70 "></div>

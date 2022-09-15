@@ -37,9 +37,16 @@ const PostingProvider = ({ children }) => {
         content,
       },
       withCredentials: true,
-    }).then((res) => {
-      console.log(res);
-    });
+    })
+      .then((res) => {
+        setTitle("");
+        setContent("");
+        router.push(`/user/${username}`);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const deletePost = (username, id) => {

@@ -19,10 +19,11 @@ const AuthenticationProvider = ({ children }) => {
   //** ----------------------Utilities-------------------------*/
   const router = useRouter();
 
-  const { data, error } = useSWR(
+  const { data: currentUser, error } = useSWR(
     "http://localhost:8080/user/currentUser",
     fetcher
   );
+  // console.log(currentUser);
 
   const { username } = router.query;
 
@@ -50,7 +51,7 @@ const AuthenticationProvider = ({ children }) => {
   } = useForm();
 
   //** -----------------------------STATES-------------------------------- */
-  const [currentUser, setCurrentUser] = useState(null);
+  // const [currentUser, setCurrentUser] = useState(null);
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
@@ -61,10 +62,10 @@ const AuthenticationProvider = ({ children }) => {
 
   // console.log(loginUsername, loginPassword);
 
-  // set user if data from swr changes
-  useEffect(() => {
-    setCurrentUser(data);
-  }, [data]);
+  // // set user if data from swr changes
+  // useEffect(() => {
+  //   setCurrentUser(data);
+  // }, [data]);
 
   // register handler
   const registerHandler = () => {
@@ -112,8 +113,8 @@ const AuthenticationProvider = ({ children }) => {
       }
     )
       .then((res) => {
-        router.push("/");
         mutate("http://localhost:8080/user/currentUser");
+        router.back();
         setLoginPassword("");
         setLoginUsername("");
         console.log(res);
@@ -171,12 +172,14 @@ const AuthenticationProvider = ({ children }) => {
   // login out handler
 
   const logOutHandler = () => {
-    Axios.get("http://localhost:8080/user/logout", {
+    Axios.delete("http://localhost:8080/user/logout", {
       withCredentials: true,
     })
       .then((res) => {
         mutate("http://localhost:8080/user/currentUser");
-        router.push("/login");
+        router.push("/login").then(() => {
+          router.reload();
+        });
         console.log(res);
       })
       .catch((err) => {

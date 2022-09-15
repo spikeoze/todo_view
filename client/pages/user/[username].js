@@ -30,7 +30,7 @@ function Username() {
     return <h1>loading...</h1>;
   }
 
-  console.log(User);
+  // console.log(User);
   // useEffect(() => {
   //   if (data) {
   //     setAllPosts(data);

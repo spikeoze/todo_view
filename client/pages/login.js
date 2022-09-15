@@ -47,7 +47,7 @@ function Login() {
               {...loginValidation("username", setLoginUsername, loginUsername)}
               // onChange={(e) => setLoginUsername(e.target.value)}
               className="bg-gray-50 block  w-full  rounded-lg border border-lightDark border-opacity-30 p-2.5 text-sm text-darkColor  dark:bg-lightDark dark:text-grayColor "
-              placeholder="Ex:mukhtaar123"
+              placeholder="Ex:username"
             />
             <span className="text-md font-light text-pinkColor">
               {errorsLogin.username?.message}
@@ -68,7 +68,7 @@ function Login() {
               value={loginPassword}
               {...loginValidation("password", setLoginPassword, loginPassword)}
               // onChange={(e) => setLoginPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="•••••"
               className="bg-gray-50 block  w-full  rounded-lg border border-lightDark border-opacity-30 p-2.5 text-sm text-darkColor  dark:bg-lightDark dark:text-grayColor "
             />
             <span className="text-md font-light text-pinkColor">

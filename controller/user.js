@@ -51,19 +51,18 @@ const loginController = (req, res) => {
 };
 
 const logoutController = (req, res) => {
-  req.logout((err) => {
+  req.logout(function (err) {
     if (err) {
       return next(err);
-    } else {
-      res.status(200).json({ message: "successfully logged out" });
     }
+    res.status(200).json({ message: "successfully logged out" });
   });
 };
 
 const currentUserController = async (req, res) => {
   if (req.user) {
     const user = await prisma.users.findUnique({
-      where: { username: req.user.username },
+      where: { id: req.user.id },
       include: { followers: true, following: true, Posts: true },
     });
     res.status(200).json(user);
@@ -75,5 +74,5 @@ module.exports = {
   loginController,
   currentUserController,
   logoutController,
-  getUser
+  getUser,
 };
