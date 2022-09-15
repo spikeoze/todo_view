@@ -13,16 +13,17 @@ const fetcher = (url) =>
   Axios.get(url, { withCredentials: true }).then((res) => res.data);
 
 function Id() {
-  const { singlePageData } = usePostingContext();
   const { comment, setComment, createComment } = useCommentContext();
-
+  const router = useRouter();
+  const { id, username } = router.query;
+  const postId = parseInt(id);
   const { data: postData, error: postDataError } = useSWR(
-    `http://localhost:8080/${singlePageData?.username}/posts/${singlePageData?.id}`,
+    `http://localhost:8080/${username}/posts/${postId}`,
     fetcher
   );
 
   const { data: comments, error: commentsError } = useSWR(
-    `http://localhost:8080/post/${singlePageData?.id}/comment`,
+    `http://localhost:8080/post/${postId}/comment`,
     fetcher
   );
 

@@ -18,21 +18,15 @@ const fetcher = (url) =>
 const PostingProvider = ({ children }) => {
   //** ----------------------Utilities-------------------------*/
   const router = useRouter();
+  const { mutate } = useSWRConfig();
 
   //** -----------------------------STATES-------------------------------- */
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [singlePageData, setSinglePageData] = useState({});
 
   //** ----------------------------Posts GET POST DELETE FUNCTIONS-------------------------- */
-
-  const handleSinglePageData = (username, id) => {
-    const data = {
-      username: username,
-      id: id,
-    };
-    setSinglePageData(data);
-  };
+  const { username } = router.query;
+  // console.log(router.query);
 
   const createPost = (username) => {
     Axios({
@@ -48,6 +42,21 @@ const PostingProvider = ({ children }) => {
     });
   };
 
+  const deletePost = (username, id) => {
+    Axios({
+      method: "DELETE",
+      url: `http://localhost:8080/${username}/posts/${id}`,
+      withCredentials: true,
+    })
+      .then((res) => {
+        mutate(`http://localhost:8080/${username}/posts`);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <PostingContext.Provider
       value={{
@@ -56,8 +65,8 @@ const PostingProvider = ({ children }) => {
         content,
         setContent,
         createPost,
-        singlePageData,
-        handleSinglePageData,
+        deletePost,
+        // userPost,
       }}
     >
       {children}

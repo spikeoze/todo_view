@@ -8,7 +8,7 @@ const getAllPosts = async (req, res) => {
   const user = await prisma.users.findUnique({
     where: { username: username },
   });
-
+  console.log(user);
   const posts = await prisma.posts.findMany({
     where: { user_id: user.id },
     orderBy: { createdAt: "desc" },
@@ -74,9 +74,9 @@ const deletePost = async (req, res) => {
   const { username, id } = req.params;
   const user = await prisma.users.findUnique({
     where: { username: username },
+    select: { id: true, username: true },
   });
-
-  const removePost = await prisma.posts.deleteMany({
+  const deletePost = await prisma.posts.deleteMany({
     where: { id: parseInt(id), user_id: user.id },
   });
 

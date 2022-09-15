@@ -26,7 +26,7 @@ const CommentProvider = ({ children }) => {
   //** ----------------------------Posts GET POST DELETE FUNCTIONS-------------------------- */
 
   const createComment = (id, username) => {
-    console.log(id, username);
+    // console.log(id, username);
     Axios({
       method: "POST",
       url: `http://localhost:8080/post/${id}/comment`,

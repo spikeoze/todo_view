@@ -4,6 +4,23 @@ const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 
 //* Controllers
+
+const getUser = async (req, res) => {
+  const { username } = req.params;
+  const user = await prisma.users.findUnique({
+    where: { username },
+    select: {
+      id: true,
+      username: true,
+      bio: true,
+      Posts: true,
+      followers: true,
+      following: true,
+    },
+  });
+  res.status(200).json(user);
+};
+
 const registerController = async (req, res, next) => {
   const { username, email, password } = req.body;
   const user = await prisma.users.findFirst({ where: { username } });
@@ -58,4 +75,5 @@ module.exports = {
   loginController,
   currentUserController,
   logoutController,
+  getUser
 };

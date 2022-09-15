@@ -8,6 +8,7 @@ const {
   loginController,
   currentUserController,
   logoutController,
+  getUser,
 } = require("../controller/user");
 const {
   registerValidator,
@@ -31,5 +32,6 @@ userRouter.post(
 userRouter.get("/logout", asyncHandler(logoutController));
 
 userRouter.get("/currentUser", asyncHandler(currentUserController));
+userRouter.get("/:username", asyncHandler(getUser));
 
 module.exports = userRouter;

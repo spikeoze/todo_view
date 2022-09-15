@@ -18,10 +18,19 @@ const fetcher = (url) =>
 const AuthenticationProvider = ({ children }) => {
   //** ----------------------Utilities-------------------------*/
   const router = useRouter();
+
   const { data, error } = useSWR(
     "http://localhost:8080/user/currentUser",
     fetcher
   );
+
+  const { username } = router.query;
+
+  const { data: User, error: UserError } = useSWR(
+    `http://localhost:8080/user/${username}`,
+    fetcher
+  );
+
   const { mutate } = useSWRConfig();
 
   const {
@@ -166,8 +175,8 @@ const AuthenticationProvider = ({ children }) => {
       withCredentials: true,
     })
       .then((res) => {
-        router.push("/login");
         mutate("http://localhost:8080/user/currentUser");
+        router.push("/login");
         console.log(res);
       })
       .catch((err) => {
@@ -179,6 +188,7 @@ const AuthenticationProvider = ({ children }) => {
     <AuthenticationContext.Provider
       value={{
         currentUser,
+        User,
         registerHandler,
         loginHandler,
         registerUsername,

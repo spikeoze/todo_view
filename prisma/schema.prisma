@@ -62,7 +62,7 @@ model Comments {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   author Users @relation(fields: [user_id], references: [id])
-  post   Posts @relation(fields: [post_id], references: [id])
+  post   Posts @relation(fields: [post_id], references: [id], onDelete: Cascade)
 
   @@map("comments")
 }
@@ -73,7 +73,7 @@ model Likes {
   post_id Int
 
   author Users @relation(fields: [user_id], references: [id])
-  post   Posts @relation(fields: [post_id], references: [id])
+  post   Posts @relation(fields: [post_id], references: [id], onDelete: Cascade)
 
   @@map("likes")
 }

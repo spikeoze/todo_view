@@ -17,8 +17,8 @@ function Nav({ darkTheme, setDarkTheme, openMenu, setOpenMenu }) {
   };
   const { currentUser, logOutHandler } = useAuthenticationContext();
 
+  // console.log(currentUser);
   const { events } = useRouter();
-
   useEffect(() => {
     const close = () => {
       setOpenMenu(false);
@@ -31,7 +31,7 @@ function Nav({ darkTheme, setDarkTheme, openMenu, setOpenMenu }) {
   }, [events, setOpenMenu]);
 
   return (
-    <div className="sticky top-0 z-50  bg-whiteColor py-3 shadow dark:shadow-sm dark:bg-darkColor dark:shadow-darkerTeal p-5  ">
+    <div className="sticky top-0 z-50  bg-whiteColor p-5 py-3 shadow dark:bg-darkColor dark:shadow-sm dark:shadow-darkerTeal  ">
       <div className="mx-auto  max-w-5xl  text-lightDark dark:text-grayColor">
         <div className="flex items-center justify-between md:hidden">
           <div className="flex items-center space-x-5">
