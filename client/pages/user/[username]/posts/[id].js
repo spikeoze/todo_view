@@ -14,6 +14,7 @@ import {
 } from "react-icons/bi";
 import { useCommentContext } from "../../../../context/commentContext";
 import { useAuthenticationContext } from "../../../../context/authenticationContext";
+import { useLikesContext } from "../../../../context/likesContext";
 
 const fetcher = (url) =>
   Axios.get(url, { withCredentials: true }).then((res) => res.data);
@@ -21,13 +22,17 @@ const fetcher = (url) =>
 function Id() {
   const { comment, setComment, createComment, deleteComment } =
     useCommentContext();
+
+  const { likePost, unLikePost } = useLikesContext();
+
   const { currentUser } = useAuthenticationContext();
   const router = useRouter();
   const { id, username } = router.query;
   const postId = parseInt(id);
   const { data: postData, error: postDataError } = useSWR(
     `http://localhost:8080/${username}/posts/${postId}`,
-    fetcher
+    fetcher,
+    { refreshInterval: 100 }
   );
 
   const { data: comments, error: commentsError } = useSWR(
@@ -82,12 +87,29 @@ function Id() {
           <div className="h-[1px] w-full bg-lightDark opacity-20 dark:opacity-70 "></div>
 
           <div className=" flex items-center justify-center  space-x-20 md:space-x-40 ">
-            <button className="flex items-center justify-center space-x-2 text-xl font-semibold text-pinkColor md:text-3xl ">
-              <HiOutlineHeart />{" "}
-              <span className="text-xs md:text-[16px]">
-                {postData?.Likes?.length} Likes
-              </span>
-            </button>
+            {postData?.Likes?.map((like) => like.user_id).includes(
+              currentUser?.id
+            ) ? (
+              <button
+                onClick={() => unLikePost(postData?.id)}
+                className="flex items-center justify-center space-x-2 text-xl font-semibold text-pinkColor md:text-2xl "
+              >
+                <HiHeart />{" "}
+                <span className="text-xs md:text-[15px]">
+                  {postData?.Likes?.length} Likes
+                </span>
+              </button>
+            ) : (
+              <button
+                onClick={() => likePost(postData?.id)}
+                className="flex items-center justify-center space-x-2 text-xl font-semibold text-pinkColor md:text-2xl "
+              >
+                <HiOutlineHeart />{" "}
+                <span className="text-xs md:text-[15px]">
+                  {postData?.Likes?.length} Likes
+                </span>
+              </button>
+            )}
             <button className="flex items-center space-x-2 text-xl font-semibold text-lightTealColor md:text-3xl  ">
               <BiComment />{" "}
               <span className="text-xs md:text-[16px]">

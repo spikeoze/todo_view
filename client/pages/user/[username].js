@@ -8,35 +8,39 @@ import parse from "html-react-parser";
 import { HiOutlineHeart, HiHeart } from "react-icons/hi";
 import { BiComment, BiDotsVerticalRounded, BiTrash } from "react-icons/bi";
 import { usePostingContext } from "../../context/postingContext";
+import { useFollowerContext } from "../../context/followerContext";
+import { useLikesContext } from "../../context/likesContext";
 
 const fetcher = (url) =>
   Axios.get(url, { withCredentials: true }).then((res) => res.data);
 
 function Username() {
   const router = useRouter();
-  const { currentUser, User } = useAuthenticationContext();
+  const { currentUser, User, UserMutate } = useAuthenticationContext();
   const { deletePost } = usePostingContext();
+  const { followUser, unFollowUser } = useFollowerContext();
+  const { likePost, unLikePost } = useLikesContext();
 
-  const { mutate } = useSWRConfig();
+  // const { mutate } = useSWRConfig();
 
-
-  const { data: userPost, error } = useSWR(
+  const {
+    data: userPost,
+    error,
+    mutate,
+  } = useSWR(
     `http://localhost:8080/${router.query?.username}/posts/`,
-    fetcher
+    fetcher,
+    { refreshInterval: 100 }
   );
-
 
   if (!userPost) {
     return <h1>loading...</h1>;
   }
 
+  // console.log(User?.followers.map((user) => user.follower_id).includes(2));
   // console.log(User);
-  // useEffect(() => {
-  //   if (data) {
-  //     setAllPosts(data);
-  //   }
-  // }, [data]);
-  // // console.log(allPosts);
+  // console.log(currentUser?.id);
+  console.log(userPost?.map((post) => post.Likes));
 
   return (
     <div className="mx-auto mt-20  max-w-5xl dark:text-whiteColor">
@@ -44,6 +48,7 @@ function Username() {
         <div className="order-last flex flex-col items-center justify-start space-y-5 lg:order-first  ">
           {userPost?.map((post) => {
             const { title, content, createdAt, Comments, Likes, author } = post;
+            console.log(Likes.map((like) => like.user_id));
 
             return (
               <div
@@ -85,12 +90,29 @@ function Username() {
                 </Link>
 
                 <div className=" flex items-center justify-center  space-x-36 ">
-                  <button className="flex items-center justify-center space-x-2 text-xl font-semibold text-pinkColor md:text-2xl ">
-                    <HiOutlineHeart />{" "}
-                    <span className="text-xs md:text-[15px]">
-                      {Likes?.length} Likes
-                    </span>
-                  </button>
+                  {Likes.map((like) => like.user_id).includes(
+                    currentUser?.id
+                  ) ? (
+                    <button
+                      onClick={() => unLikePost(post?.id)}
+                      className="flex items-center justify-center space-x-2 text-xl font-semibold text-pinkColor md:text-2xl "
+                    >
+                      <HiHeart />{" "}
+                      <span className="text-xs md:text-[15px]">
+                        {Likes?.length} Likes
+                      </span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => likePost(post?.id)}
+                      className="flex items-center justify-center space-x-2 text-xl font-semibold text-pinkColor md:text-2xl "
+                    >
+                      <HiOutlineHeart />{" "}
+                      <span className="text-xs md:text-[15px]">
+                        {Likes?.length} Likes
+                      </span>
+                    </button>
+                  )}
                   <Link href={`/user/${author.username}/posts/${post.id}`}>
                     <button className="flex items-center space-x-2 rounded p-2 text-xl  font-semibold text-lightTealColor hover:bg-lightDark hover:bg-opacity-40 md:text-2xl  ">
                       <BiComment />{" "}
@@ -138,8 +160,28 @@ function Username() {
               <button className="text-md rounded-md  border-darkColor bg-lightTealColor px-3 py-2 font-semibold text-darkColor  shadow">
                 Edit
               </button>
+            ) : User?.followers
+                .map((user) => user.follower_id)
+                .includes(currentUser?.id) ? (
+              <button
+                onClick={() => {
+                  unFollowUser(User?.username);
+                  // UserMutate(`http://localhost:8080/user/${User?.username}`);
+                }}
+                className="text-md rounded-md  border-darkColor bg-lightTealColor px-3 py-2 font-semibold text-darkColor  shadow"
+              >
+                Unfollow
+              </button>
             ) : (
-              <button className="text-md rounded-md  border-darkColor bg-lightTealColor px-3 py-2 font-semibold text-darkColor  shadow">
+              <button
+                onClick={() => {
+                  !currentUser
+                    ? router.push("/login")
+                    : followUser(User?.username);
+                  // UserMutate(`http://localhost:8080/user/${User?.username}`);
+                }}
+                className="text-md rounded-md  border-darkColor bg-lightTealColor px-3 py-2 font-semibold text-darkColor  shadow"
+              >
                 Follow
               </button>
             )}

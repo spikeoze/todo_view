@@ -27,10 +27,11 @@ const AuthenticationProvider = ({ children }) => {
 
   const { username } = router.query;
 
-  const { data: User, error: UserError } = useSWR(
-    `http://localhost:8080/user/${username}`,
-    fetcher
-  );
+  const {
+    data: User,
+    error: UserError,
+    mutate: UserMutate,
+  } = useSWR(`http://localhost:8080/user/${username}`, fetcher, {refreshInterval:100});
 
   const { mutate } = useSWRConfig();
 
@@ -192,6 +193,7 @@ const AuthenticationProvider = ({ children }) => {
       value={{
         currentUser,
         User,
+        UserMutate,
         registerHandler,
         loginHandler,
         registerUsername,

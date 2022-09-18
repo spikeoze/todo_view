@@ -5,6 +5,9 @@ import NProgress from "nprogress";
 import { AuthenticationProvider } from "../context/authenticationContext";
 import { PostingProvider } from "../context/postingContext";
 import { CommentProvider } from "../context/commentContext";
+import { FollowerProvider } from "../context/followerContext";
+import { LikesProvider } from "../context/likesContext";
+
 function MyApp({ Component, pageProps }) {
   NProgress.configure({ showSpinner: false });
 
@@ -19,9 +22,13 @@ function MyApp({ Component, pageProps }) {
     <AuthenticationProvider>
       <PostingProvider>
         <CommentProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <LikesProvider>
+            <FollowerProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </FollowerProvider>
+          </LikesProvider>
         </CommentProvider>
       </PostingProvider>
     </AuthenticationProvider>
