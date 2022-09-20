@@ -7,6 +7,7 @@ const {
   getSinglePost,
   createPost,
   deletePost,
+  getCurrentUserFollowingsPosts,
 } = require("../controller/posts");
 
 const {
@@ -17,6 +18,10 @@ const {
 const { isAuthorized } = require("../middleware/postMiddleware");
 
 postRouter.get("/:username/posts", asyncHandler(getAllPosts));
+postRouter.get(
+  "/:username/following_posts",
+  asyncHandler(getCurrentUserFollowingsPosts)
+);
 postRouter.get("/:username/posts/:id", asyncHandler(getSinglePost));
 
 postRouter.post(

@@ -40,7 +40,7 @@ function Username() {
   // console.log(User?.followers.map((user) => user.follower_id).includes(2));
   // console.log(User);
   // console.log(currentUser?.id);
-  console.log(userPost?.map((post) => post.Likes));
+  // console.log(userPost?.map((post) => post.Likes));
 
   return (
     <div className="mx-auto mt-20  max-w-5xl dark:text-whiteColor">
@@ -48,7 +48,7 @@ function Username() {
         <div className="order-last flex flex-col items-center justify-start space-y-5 lg:order-first  ">
           {userPost?.map((post) => {
             const { title, content, createdAt, Comments, Likes, author } = post;
-            console.log(Likes.map((like) => like.user_id));
+            // console.log(Likes.map((like) => like.user_id));
 
             return (
               <div

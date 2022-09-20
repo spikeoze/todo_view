@@ -31,7 +31,7 @@ const AuthenticationProvider = ({ children }) => {
     data: User,
     error: UserError,
     mutate: UserMutate,
-  } = useSWR(`http://localhost:8080/user/${username}`, fetcher, {refreshInterval:100});
+  } = useSWR(`http://localhost:8080/user/${username}`, fetcher, {refreshInterval:500});
 
   const { mutate } = useSWRConfig();
 

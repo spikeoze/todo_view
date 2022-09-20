@@ -63,7 +63,15 @@ const currentUserController = async (req, res) => {
   if (req.user) {
     const user = await prisma.users.findUnique({
       where: { id: req.user.id },
-      include: { followers: true, following: true, Posts: true },
+      select: {
+        id: true,
+        username: true,
+        bio: true,
+        createdAt: true,
+        updatedAt: true,
+        followers: true,
+        following: true,
+      },
     });
     res.status(200).json(user);
   }

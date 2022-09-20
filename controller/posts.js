@@ -8,7 +8,6 @@ const getAllPosts = async (req, res) => {
   const user = await prisma.users.findUnique({
     where: { username: username },
   });
-  console.log(user);
   const posts = await prisma.posts.findMany({
     where: { user_id: user.id },
     orderBy: { createdAt: "desc" },
@@ -54,6 +53,53 @@ const getSinglePost = async (req, res) => {
 
 /** @type {import("express").RequestHandler} */
 
+const getCurrentUserFollowingsPosts = async (req, res) => {
+  const { username } = req.params;
+
+  var d = new Date();
+  var xDaysAgo = d.setDate(d.getDate() - 5);
+
+  const posts = await prisma.users.findUnique({
+    where: { username },
+    select: {
+      Posts: {
+        where: { createdAt: { gte: new Date(xDaysAgo) } },
+        orderBy: { createdAt: "desc" },
+        include: { Likes: true, Comments: true, author: true },
+      },
+      following: {
+        select: {
+          follower: {
+            select: {
+              id: true,
+              Posts: {
+                where: { createdAt: { gte: new Date(xDaysAgo) } },
+                orderBy: { createdAt: "desc" },
+                include: {
+                  author: { select: { id: true, username: true } },
+                  Likes: true,
+                  Comments: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const { Posts, following } = posts;
+
+  const mappedPosts = following
+    .map((user) => user.follower)
+    .map((follower) => follower.Posts)
+    .flat();
+
+  res.status(200).json([...Posts, mappedPosts].flat());
+};
+
+/** @type {import("express").RequestHandler} */
+
 const createPost = async (req, res) => {
   const { title, content } = req.body;
   const { username } = req.params;
@@ -88,4 +134,5 @@ module.exports = {
   getSinglePost,
   createPost,
   deletePost,
+  getCurrentUserFollowingsPosts,
 };
